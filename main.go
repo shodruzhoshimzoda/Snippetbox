@@ -7,14 +7,7 @@ import (
 	"strconv"
 )
 
-func exampleHandler(w http.ResponseWriter, r *http.Request) {
 
-	category := r.PathValue("category") // read paramater from path
-
-	writeCategory := []byte(category)
-
-	w.Write(writeCategory)
-}
 
 // handler for home-page
 func home(w http.ResponseWriter, r *http.Request){
@@ -49,9 +42,8 @@ func main() {
 
 	// routes registration
 	mux.HandleFunc("/{$}", home)
-	mux.HandleFunc("/snippet/{category}",exampleHandler)
-	mux.HandleFunc("/snippet/view/{id}", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
+	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
+	mux.HandleFunc("POST /snippet/create", snippetCreate)
 
 	
 
@@ -60,8 +52,6 @@ func main() {
 
 	err := http.ListenAndServe(":4000", mux)
 	log.Fatal("Error to run server: ", err)
-
-
 
 
 }
