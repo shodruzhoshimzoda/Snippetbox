@@ -11,6 +11,10 @@ import (
 
 // handler for home-page
 func home(w http.ResponseWriter, r *http.Request){
+
+	w.Header().Add("Server", "Go`")
+
+
 	w.Write([]byte("hello from Snippetbox"))
 }
 
@@ -24,12 +28,16 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 	}
 
 
-	msg := fmt.Sprintf("Display a specific movie with id: %v", id)
+	fmt.Fprintf(w, "Display a specific snippet with ID: %v", id)
 
-	w.Write([]byte(msg))
 }
 
 func snippetCreate(w http.ResponseWriter, r *http.Request) {
+
+	// chang http status code 
+	w.WriteHeader(http.StatusCreated)
+
+
 	w.Write([]byte("Display a form for creating new snippet"))
 }
  
