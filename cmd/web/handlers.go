@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -41,25 +40,3 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Display a form for creating new snippet"))
 }
  
-
-
-func main() {
-	
-	mux := http.NewServeMux()
-
-
-	// routes registration
-	mux.HandleFunc("/{$}", home)
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
-	mux.HandleFunc("POST /snippet/create", snippetCreate)
-
-	
-
-
-	log.Println("Server was runned on port: localhost:4000")
-
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal("Error to run server: ", err)
-
-
-}
