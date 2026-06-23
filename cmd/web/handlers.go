@@ -15,15 +15,20 @@ func home(w http.ResponseWriter, r *http.Request){
 
 	w.Header().Add("Server", "Go`")
 
+	files := []string{		
+		"./ui/html/pages/home.html",
+		"./ui/html/pages/partials/nav.html",
+		"./ui/html/pages/base.html",
+	}
 
-	ts, err := template.ParseFiles("./ui/html/pages/home.html")   // parse files from directory of templates
+	ts, err := template.ParseFiles(files...)   // parse files from directory of templates
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Interranl Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = ts.Execute(w, nil) 
+	err = ts.ExecuteTemplate(w, "base", nil) 
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

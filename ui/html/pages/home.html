@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hemo Snippetbox</title>
-</head>
-<body>
-    <header>
-        <h1><a href="/">Snippetbox</a></h1>
-    </header>
+{{define "title"}} Home {{end}}
 
-    <main>
-        <h2>Lates Snippets</h2>
-        <p>There nothing snippets here yet !</p>
-    </main>
+{{define "main"}} 
 
-    <footer> Powered by <a href="https://golang.org">Go</a></footer>
-</body>
-</html>
+    {{template "nav" .}}
+    <h2>Latest</h2>
+    <p>There's nothing yet</p>
+{{end}}
 
