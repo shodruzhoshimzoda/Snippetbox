@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 )
@@ -11,8 +12,11 @@ import (
 
 func main() {
 	
+	addr := flag.String("addr",":4000", "HTTP network address")
+	flag.Parse()
 	mux := http.NewServeMux()
 
+	
 
 	// serve static files
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
@@ -28,7 +32,7 @@ func main() {
 	
 
 
-	log.Println("Server was runned on port: localhost:4000")
+	log.Println("Server was runned on port: ", *addr)
 
 	err := http.ListenAndServe(":4000", mux)
 	log.Fatal("Error to run server: ", err)
