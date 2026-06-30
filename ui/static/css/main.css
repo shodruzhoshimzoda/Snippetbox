@@ -1,9 +1,8 @@
+/* --- БАЗОВЫЕ НАСТРОЙКИ И ТИПОГРАФИКА --- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-size: 18px;
-    font-family: "Ubuntu Mono", monospace;
 }
 
 html, body {
@@ -11,303 +10,311 @@ html, body {
 }
 
 body {
-    line-height: 1.5;
-    background-color: #F1F3F6;
-    color: #34495E;
+    font-size: 16px;
+    line-height: 1.6;
+    /* Системный шрифт для интерфейса, читать станет намного приятнее */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #F8FAFC; /* Более мягкий светлый тон */
+    color: #334155; /* Снизили контраст черного для меньшей усталости глаз */
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
 }
 
+/* --- СЕТКА И АДАПТИВНОСТЬ (Обертки) --- */
 header, nav, main, footer {
-    padding: 2px calc((100% - 800px) / 2) 0;
+    width: 100%;
+    max-width: 960px; /* Сайт теперь гибкий, а не фиксированный */
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
 main {
-    margin-top: 54px;
-    margin-bottom: 54px;
-    min-height: calc(100vh - 345px);
-    overflow: auto;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    flex: 1 0 auto; /* Прижимает футер к низу без костылей с вычислением высоты */
 }
 
-h1 a {
-    font-size: 36px;
-    font-weight: bold;
-    background-image: url("/static/img/logo.png");
-    background-repeat: no-repeat;
-    background-position: 0px 0px;
-    height: 36px;
-    padding-left: 50px;
-    position: relative;
-}
-
-h1 a:hover {
-    text-decoration: none;
-    color: #34495E;
-}
-
-h2 {
-    font-size: 22px;
-    margin-bottom: 36px;
-    position: relative;
-    top: -9px;
-}
-
+/* --- ССЫЛКИ И КНОПКИ --- */
 a {
-    color: #62CB31;
+    color: #10B981; /* Более сочный изумрудный цвет вместо болотного */
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #4EB722;
+    color: #059669;
     text-decoration: underline;
 }
 
-textarea, input:not([type="submit"]) {
-    font-size: 18px;
-    font-family: "Ubuntu Mono", monospace;
-}
-
-header {
-    background-image: -webkit-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
-    background-image: -moz-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
-    background-image: -ms-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
-    background-image: linear-gradient(to right, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
-    background-size: 100% 6px;
-    background-repeat: no-repeat;
-    border-bottom: 1px solid #E4E5E7;
-    overflow: auto;
-    padding-top: 33px;
-    padding-bottom: 27px;
-    text-align: center;
-}
-
-header a {
-    color: #34495E;
-    text-decoration: none;
-}
-
-nav {
-    border-bottom: 1px solid #E4E5E7;
-    padding-top: 17px;
-    padding-bottom: 15px;
-    background: #F7F9FA;
-    height: 60px;
-    color: #6A6C6F;
-}
-
-nav a {
-    margin-right: 1.5em;
-    display: inline-block;
-}
-
-nav form {
-    display: inline-block;
-    margin-left: 1.5em;
-}
-
-nav div {
-    width: 50%;
-    float: left;
-}
-
-nav div:last-child {
-    text-align: right;
-}
-
-nav div:last-child a {
-    margin-left: 1.5em;
-    margin-right: 0;
-}
-
-nav a.live {
-    color: #34495E;
-    cursor: default;
-}
-
-nav a.live:hover {
-    text-decoration: none;
-}
-
-nav a.live:after {
-    content: '';
-    display: block;
-    position: relative;
-    left: calc(50% - 7px);
-    top: 9px;
-    width: 14px;
-    height: 14px;
-    background: #F7F9FA;
-    border-left: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(-45deg);
-}
-
 a.button, input[type="submit"] {
-    background-color: #62CB31;
-    border-radius: 3px;
+    background-color: #10B981;
+    border-radius: 6px;
     color: #FFFFFF;
-    padding: 18px 27px;
+    padding: 12px 24px;
     border: none;
     display: inline-block;
-    margin-top: 18px;
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }
 
 a.button:hover, input[type="submit"]:hover {
-    background-color: #4EB722;
+    background-color: #059669;
     color: #FFFFFF;
-    cursor: pointer;
     text-decoration: none;
-}
-
-form div {
-    margin-bottom: 18px;
-}
-
-form div:last-child {
-    border-top: 1px dashed #E4E5E7;
-}
-
-form input[type="radio"] {
-    margin-left: 18px;
-}
-
-form input[type="text"], form input[type="password"], form input[type="email"] {
-    padding: 0.75em 18px;
-    width: 100%;
-}
-
-form input[type=text], form input[type="password"], form input[type="email"], textarea {
-    color: #6A6C6F;
-    background: #FFFFFF;
-    border: 1px solid #E4E5E7;
-    border-radius: 3px;
-}
-
-form label {
-    display: inline-block;
-    margin-bottom: 9px;
-}
-
-.error {
-    color: #C0392B;
-    font-weight: bold;
-    display: block;
-}
-
-.error + textarea, .error + input {
-    border-color: #C0392B !important;
-    border-width: 2px !important;
-}
-
-textarea {
-    padding: 18px;
-    width: 100%;
-    height: 266px;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
 }
 
 button {
     background: none;
     padding: 0;
     border: none;
-    color: #62CB31;
-    text-decoration: none;
+    color: #10B981;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
 button:hover {
-    color: #4EB722;
+    color: #059669;
     text-decoration: underline;
-    cursor: pointer;
 }
 
-.snippet {
-    background-color: #FFFFFF;
-    border: 1px solid #E4E5E7;
-    border-radius: 3px;
+/* --- ШАПКА САЙТА (Header) --- */
+header {
+    /* Оставили вашу фирменную радужную полосу, но убрали старый хлам из префиксов */
+    background-image: linear-gradient(to right, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
+    background-size: 100% 4px;
+    background-repeat: no-repeat;
+    padding-top: 40px;
+    padding-bottom: 24px;
+    text-align: center;
 }
 
-.snippet pre {
-    padding: 18px;
-    border-top: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
-}
-
-.snippet .metadata {
-    background-color: #F7F9FA;
-    color: #6A6C6F;
-    padding: 0.75em 18px;
-    overflow: auto;
-}
-
-.snippet .metadata span {
-    float: right;
-}
-
-.snippet .metadata strong {
-    color: #34495E;
-}
-
-.snippet .metadata time {
+header h1 a {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1E293B;
+    background-image: url("/static/img/logo.png");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 36px;
+    padding-left: 48px;
     display: inline-block;
 }
 
-.snippet .metadata time:first-child {
-    float: left;
+header h1 a:hover {
+    color: #1E293B;
+    text-decoration: none;
 }
 
-.snippet .metadata time:last-child {
-    float: right;
+h2 {
+    font-size: 20px;
+    color: #64748B;
+    margin-top: 8px;
+    margin-bottom: 32px;
+    font-weight: 400;
+}
+
+/* --- НАВИГАЦИЯ (Nav) --- */
+nav {
+    display: flex;
+    justify-content: space-between; /* Левая и правая часть разлетаются по краям сами */
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 12px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+nav div {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Красивые одинаковые отступы между ссылками */
+}
+
+nav a {
+    color: #475569;
+    font-weight: 500;
+}
+
+nav a.live {
+    color: #10B981;
+    font-weight: 700;
+    cursor: default;
+    position: relative;
+}
+
+/* Красивая минималистичная точка под активной ссылкой вместо громоздкого стрелочного треугольника */
+nav a.live::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: #10B981;
+    border-radius: 50%;
+}
+
+/* --- ЭЛЕМЕНТЫ ФОРМ --- */
+form div {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569;
+}
+
+textarea, input:not([type="submit"]) {
+    font-size: 16px;
+    font-family: "Ubuntu Mono", monospace; /* Для кода и ввода оставляем моноширинный */
+    color: #1E293B;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    padding: 12px 16px;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+textarea:focus, input:not([type="submit"]):focus {
+    outline: none;
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+textarea {
+    height: 200px;
+    resize: vertical; /* Разрешаем пользователю тянуть поле только вниз */
+}
+
+/* --- ОШИБКИ И СТАТУСЫ --- */
+.error {
+    color: #EF4444;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.error + textarea, .error + input {
+    border-color: #EF4444 !important;
+    background-color: #FEF2F2;
+}
+
+div.flash, div.error {
+    padding: 14px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 div.flash {
-    color: #FFFFFF;
-    font-weight: bold;
-    background-color: #34495E;
-    padding: 18px;
-    margin-bottom: 36px;
-    text-align: center;
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #A7F3D0;
 }
 
 div.error {
-    color: #FFFFFF;
-    background-color: #C0392B;
-    padding: 18px;
-    margin-bottom: 36px;
-    font-weight: bold;
-    text-align: center;
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
 }
 
+/* --- КАРТОЧКА СНИППЕТА (Информационный блок) --- */
+.snippet {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    margin-bottom: 24px;
+}
+
+.snippet pre {
+    padding: 20px;
+    font-family: "Ubuntu Mono", monospace;
+    font-size: 15px;
+    background-color: #F8FAFC;
+    overflow-x: auto;
+    color: #334155;
+}
+
+.snippet .metadata {
+    background-color: #FFFFFF;
+    border-top: 1px solid #E2E8F0;
+    color: #64748B;
+    padding: 12px 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.snippet .metadata strong {
+    color: #1E293B;
+}
+
+/* --- ТАБЛИЦЫ --- */
 table {
-    background: white;
-    border: 1px solid #E4E5E7;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
     border-collapse: collapse;
     width: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* Чтобы скругления таблицы не резались строками */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
-td, th {
+th, td {
     text-align: left;
-    padding: 9px 18px;
+    padding: 14px 20px;
+    font-size: 15px;
+}
+
+th {
+    background-color: #F8FAFC;
+    color: #475569;
+    font-weight: 600;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+tr {
+    border-bottom: 1px solid #E2E8F0;
+    transition: background-color 0.15s ease;
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #F8FAFC; /* Эффект подсвечивания строки при наведении */
 }
 
 th:last-child, td:last-child {
     text-align: right;
-    color: #6A6C6F;
 }
 
-tr {
-    border-bottom: 1px solid #E4E5E7;
-}
-
-tr:nth-child(2n) {
-    background-color: #F7F9FA;
-}
-
+/* --- ФУТЕР (Footer) --- */
 footer {
-    border-top: 1px solid #E4E5E7;
-    padding-top: 17px;
-    padding-bottom: 15px;
-    background: #F7F9FA;
-    height: 60px;
-    color: #6A6C6F;
+    border-top: 1px solid #E2E8F0;
+    padding: 20px 0;
+    color: #94A3B8;
+    font-size: 14px;
     text-align: center;
+    margin-top: auto;
 }
