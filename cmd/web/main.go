@@ -34,7 +34,7 @@ func main() {
 
 	log.Println("Server was runned on port: ", *addr)
 
-	err := http.ListenAndServe(":4000", mux)
+	err := http.ListenAndServe(*addr, mux)
 	log.Fatal("Error to run server: ", err)
 
 
