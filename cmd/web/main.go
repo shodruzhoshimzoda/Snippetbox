@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 )
 
 
@@ -14,9 +15,14 @@ func main() {
 	
 	addr := flag.String("addr",":4000", "HTTP network address")
 	flag.Parse()
-	mux := http.NewServeMux()
-
 	
+
+	// creating logger
+	log := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	}))
+	
+	mux := http.NewServeMux()
 
 	// serve static files
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
@@ -32,10 +38,12 @@ func main() {
 	
 
 
-	log.Println("Server was runned on port: ", *addr)
+	log.Info("Server was runned ","addr", *addr)
 
-	err := http.ListenAndServe(*addr, mux)
-	log.Fatal("Error to run server: ", err)
+	if err := http.ListenAndServe(*addr, mux);err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
 
 
 }
