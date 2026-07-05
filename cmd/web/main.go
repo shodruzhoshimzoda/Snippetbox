@@ -7,7 +7,9 @@ import (
 	"os"
 )
 
-
+type application struct {
+	logger 	*slog.Logger
+}
 
 
 
@@ -22,6 +24,10 @@ func main() {
 		Level: slog.LevelDebug,
 	}))
 	
+	app := &application{
+		logger: log,
+	}
+
 	mux := http.NewServeMux()
 
 	// serve static files
@@ -31,9 +37,9 @@ func main() {
 	mux.Handle("GET /static/", http.StripPrefix("/static",fileServer))
 
 	// routes registration
-	mux.HandleFunc("/{$}", home)
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
-	mux.HandleFunc("POST /snippet/create", snippetCreate)
+	mux.HandleFunc("/{$}", app.home)
+	mux.HandleFunc("GET /snippet/view/{id}", app.snippetView)
+	mux.HandleFunc("POST /snippet/create",app. snippetCreate)
 
 	
 

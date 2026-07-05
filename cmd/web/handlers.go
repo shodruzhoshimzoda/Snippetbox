@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -11,7 +10,7 @@ import (
 )
 
 // handler for home-page
-func home(w http.ResponseWriter, r *http.Request){
+func (app *application) home(w http.ResponseWriter, r *http.Request){
 
 	w.Header().Add("Server", "Go`")
 
@@ -23,14 +22,14 @@ func home(w http.ResponseWriter, r *http.Request){
 
 	ts, err := template.ParseFiles(files...)   // parse files from directory of templates
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Interranl Server Error", http.StatusInternalServerError)
+		app.logger.Error(err.Error(), "method", r.Method, "url", r.URL.RequestURI())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	err = ts.ExecuteTemplate(w, "base", nil) 
 	if err != nil {
-		log.Println(err.Error())
+		app.logger.Error(err.Error(), "method", r.Method, "url", r.URL.RequestURI())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -40,7 +39,7 @@ func home(w http.ResponseWriter, r *http.Request){
 }
 
 // handler for viewing snippet
-func snippetView(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(r.PathValue("id")) // convert id which is string to integer
 
@@ -53,7 +52,7 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 
 	// chang http status code 
 	w.WriteHeader(http.StatusCreated)
