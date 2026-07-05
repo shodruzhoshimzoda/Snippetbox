@@ -22,15 +22,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request){
 
 	ts, err := template.ParseFiles(files...)   // parse files from directory of templates
 	if err != nil {
-		app.logger.Error(err.Error(), "method", r.Method, "url", r.URL.RequestURI())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serveError(w, r, err )
 		return
 	}
 
 	err = ts.ExecuteTemplate(w, "base", nil) 
 	if err != nil {
-		app.logger.Error(err.Error(), "method", r.Method, "url", r.URL.RequestURI())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serveError(w,r, err)
 		return
 	}
  
@@ -44,7 +42,8 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id")) // convert id which is string to integer
 
 	if err != nil || id < 1 {
-		http.NotFound(w, r)			// because of we get error the page with this id its not exist
+		http.NotFound(w,r )			// because of we get invalid ID, the page with this id its not exist
+		return
 	}
 
 
