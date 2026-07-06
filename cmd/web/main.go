@@ -28,25 +28,11 @@ func main() {
 		logger: log,
 	}
 
-	mux := http.NewServeMux()
-
-	// serve static files
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-
 	
-	mux.Handle("GET /static/", http.StripPrefix("/static",fileServer))
-
-	// routes registration
-	mux.HandleFunc("/{$}", app.home)
-	mux.HandleFunc("GET /snippet/view/{id}", app.snippetView)
-	mux.HandleFunc("POST /snippet/create",app. snippetCreate)
-
-	
-
 
 	log.Info("Server was runned ","addr", *addr)
 
-	if err := http.ListenAndServe(*addr, mux);err != nil {
+	if err := http.ListenAndServe(*addr, app.routes());err != nil {
 		log.Error(err.Error())
 		os.Exit(1)
 	}
