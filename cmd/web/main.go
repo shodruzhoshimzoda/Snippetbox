@@ -9,10 +9,12 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/joho/godotenv"
+	"github.com/shodruzhoshimzoda/snippetbox/internal/models"
 )
 
 type application struct {
-	logger *slog.Logger
+	logger   *slog.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -25,22 +27,27 @@ func main() {
 		Level: slog.LevelDebug,
 	}))
 
-	app := &application{
-		logger: log,
-	}
-
 	// reading DSN
-	DSN := app.readDSN()
+	if err := godotenv.Load(".env"); err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
+	DSN := os.Getenv("DATABASE_DSN")
+	if DSN == "" {
+		log.Error("Missing DATABASE_DSN")
+		os.Exit(1)
+	}
 
 	// connection to DB
 	db, err := openDB(DSN)
 	if err != nil {
-		app.logger.Error(err.Error())
-
-		os.Exit(1)
+		log.Error(err.Error())
 	}
 
-	defer db.Close()
+	app := &application{
+		logger:   log,
+		snippets: &models.SnippetModel{DB: db},
+	}
 
 	app.logger.Info("connected to database")
 
@@ -50,22 +57,6 @@ func main() {
 		log.Error(err.Error())
 		os.Exit(1)
 	}
-
-}
-
-func (app *application) readDSN() string {
-
-	if err := godotenv.Load(".env"); err != nil {
-		app.logger.Error(err.Error())
-		os.Exit(1)
-	}
-
-	DSN := os.Getenv("DATABASE_DSN")
-	if DSN == "" {
-		app.logger.Error("Missing DATABASE_DSN")
-		os.Exit(1)
-	}
-	return DSN
 
 }
 
