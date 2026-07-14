@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 	// "github.com/pingcap/log"
@@ -16,23 +15,33 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("Server", "Go`")
 
-	files := []string{
-		"./ui/html/pages/home.html",
-		"./ui/html/pages/partials/nav.html",
-		"./ui/html/pages/base.html",
-	}
-
-	ts, err := template.ParseFiles(files...) // parse files from directory of templates
+	snippets, err := app.snippets.Latest()
 	if err != nil {
 		app.serveError(w, r, err)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serveError(w, r, err)
-		return
+	for _, snippet := range snippets {
+		fmt.Fprintln(w, snippet)
 	}
+
+	//files := []string{
+	//	"./ui/html/pages/home.html",
+	//	"./ui/html/pages/partials/nav.html",
+	//	"./ui/html/pages/base.html",
+	//}
+	//
+	//ts, err := template.ParseFiles(files...) // parse files from directory of templates
+	//if err != nil {
+	//	app.serveError(w, r, err)
+	//	return
+	//}
+	//
+	//err = ts.ExecuteTemplate(w, "base", nil)
+	//if err != nil {
+	//	app.serveError(w, r, err)
+	//	return
+	//}
 
 	// w.Write([]byte("hello from Snippetbox"))
 }
