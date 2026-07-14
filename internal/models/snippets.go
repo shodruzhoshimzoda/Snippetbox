@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -34,9 +35,36 @@ func (s *SnippetModel) Insert(title, content string, expires int) (int, error) {
 	return id, nil
 }
 
-func (s *SnippetModel) Get(id int) (Snippet, error) {
+func (m *SnippetModel) Get(id int) (Snippet, error) {
+	// 1. Меняем синтаксис SQL:
+	// - UTC_TIMESTAMP() заменяем на NOW() AT TIME ZONE 'utc'
+	// - Плейсхолдер ? заменяем на $1
+	stmt := `SELECT id, title, content, created, expires FROM snippets
+             WHERE expires > NOW() AT TIME ZONE 'utc' AND id = $1`
 
-	return Snippet{}, nil
+	// Инициализируем пустую структуру Snippet
+	var s Snippet
+
+	// 2. Вызываем QueryRow на пуле pgx, обязательно передавая контекст.
+	// Метод Scan() вызываем цепочкой сразу после QueryRow — это стандартный и лаконичный паттерн.
+	err := m.DB.QueryRow(context.Background(), stmt, id).Scan(
+		&s.ID,
+		&s.Title,
+		&s.Content,
+		&s.Created,
+		&s.Expires,
+	)
+
+	if err != nil {
+		// 3. Вместо sql.ErrNoRows проверяем ошибку pgx.ErrNoRows
+		if errors.Is(err, pgx.ErrNoRows) {
+			return Snippet{}, ErrSnippetNotFound
+		}
+		return Snippet{}, err
+	}
+
+	// Если всё прошло успешно, возвращаем заполненную структуру
+	return s, nil
 }
 
 func (s *SnippetModel) Latest() ([]Snippet, error) {

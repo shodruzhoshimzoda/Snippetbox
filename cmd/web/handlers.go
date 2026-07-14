@@ -1,11 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
 	// "github.com/pingcap/log"
+
+	"github.com/shodruzhoshimzoda/snippetbox/internal/models"
 )
 
 // handler for home-page
@@ -44,8 +47,17 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific snippet with ID: %v", id)
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrSnippetNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		app.serveError(w, r, err)
+		return
 
+	}
+	fmt.Fprintf(w, "%v", snippet)
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
