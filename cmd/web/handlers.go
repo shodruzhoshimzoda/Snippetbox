@@ -50,8 +50,14 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 
-	// chang http status code
-	w.WriteHeader(http.StatusCreated)
+	title := "O snail"
+	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"
+	expires := 7
 
-	w.Write([]byte("Display a form for creating new snippet"))
+	id, err := app.snippets.Insert(title, content, expires)
+	if err != nil {
+		app.serveError(w, r, err)
+	}
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+
 }

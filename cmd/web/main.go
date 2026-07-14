@@ -1,12 +1,13 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"flag"
 	"log/slog"
 	"net/http"
 	"os"
 
+	"github.com/jackc/pgx/v5"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/joho/godotenv"
 	"github.com/shodruzhoshimzoda/snippetbox/internal/models"
@@ -43,7 +44,7 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	}
-
+	defer db.Close(context.Background())
 	app := &application{
 		logger:   log,
 		snippets: &models.SnippetModel{DB: db},
@@ -62,14 +63,17 @@ func main() {
 
 // openDB connection to Database
 
-func openDB(dsn string) (*sql.DB, error) {
+func openDB(dsn string) (*pgx.Conn, error) {
 
-	db, err := sql.Open("pgx", dsn)
+	conn, err := pgx.Connect(context.Background(), dsn)
 	if err != nil {
 		return nil, err
 	}
-	if err := db.Ping(); err != nil {
+
+	if err := conn.Ping(context.Background()); err != nil {
 		return nil, err
 	}
-	return db, nil
+
+	return conn, nil
+
 }
