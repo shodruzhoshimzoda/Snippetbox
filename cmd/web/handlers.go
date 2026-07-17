@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
 	// "github.com/pingcap/log"
@@ -61,12 +62,37 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, models.ErrSnippetNotFound) {
 			http.NotFound(w, r)
 			return
+		} else {
+			app.serveError(w, r, err)
 		}
-		app.serveError(w, r, err)
 		return
 
 	}
-	fmt.Fprintf(w, "%v", snippet)
+
+	files := []string{
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/view.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
+
+	if err != nil {
+		app.serveError(w, r, err)
+		return
+	}
+
+	data := templateData{
+		Snippet: snippet,
+	}
+
+	// execute template with data
+	err = ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serveError(w, r, err)
+		return
+	}
+
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
