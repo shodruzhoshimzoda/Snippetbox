@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 // this method will be used if we encountered with any unexpected error in server side
 func (app *application) serveError(w http.ResponseWriter, r *http.Request, error error) {
@@ -17,4 +20,21 @@ func (app *application) serveError(w http.ResponseWriter, r *http.Request, error
 func (app *application) clientError(w http.ResponseWriter, statusCode int) {
 
 	http.Error(w, http.StatusText(statusCode), statusCode)
+}
+
+func (app *application) render(w http.ResponseWriter, r *http.Request, status int, page string, data templateData) {
+
+	ts, ok := app.templateCache[page]
+	if !ok {
+		err := fmt.Errorf("template does not exist", page)
+		app.serveError(w, r, err)
+		return
+	}
+
+	w.WriteHeader(status)
+	err := ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serveError(w, r, err)
+	}
+
 }
