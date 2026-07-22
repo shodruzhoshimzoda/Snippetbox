@@ -36,13 +36,11 @@ func (s *SnippetModel) Insert(title, content string, expires int) (int, error) {
 }
 
 func (m *SnippetModel) Get(id int) (Snippet, error) {
-	// 1. Меняем синтаксис SQL:
-	// - UTC_TIMESTAMP() заменяем на NOW() AT TIME ZONE 'utc'
-	// - Плейсхолдер ? заменяем на $1
+	
 	stmt := `SELECT id, title, content, created, expires FROM snippets
              WHERE expires > NOW() AT TIME ZONE 'utc' AND id = $1`
 
-	// Инициализируем пустую структуру Snippet
+
 	var s Snippet
 
 	// 2. Вызываем QueryRow на пуле pgx, обязательно передавая контекст.

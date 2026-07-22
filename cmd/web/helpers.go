@@ -26,7 +26,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 
 	ts, ok := app.templateCache[page]
 	if !ok {
-		err := fmt.Errorf("template does not exist", page)
+		err := fmt.Errorf("template does not exist: %v", page)
 		app.serveError(w, r, err)
 		return
 	}
