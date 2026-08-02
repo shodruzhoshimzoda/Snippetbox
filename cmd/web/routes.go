@@ -16,6 +16,6 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /snippet/view/{id}", app.snippetView)
 	mux.HandleFunc("POST /snippet/create", app.snippetCreate)
 
-	return commonHeaders(mux)
+	return app.logRequestMiddleware(commonHeaders(mux))
 
 }
