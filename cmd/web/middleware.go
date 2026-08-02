@@ -14,3 +14,17 @@ func commonHeaders(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (app *application) logRequestMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		var (
+			url    = r.URL.RequestURI()
+			method = r.Method
+		)
+
+		app.logger.Info("received request", "url", url, "method", method)
+
+		next.ServeHTTP(w, r)
+	})
+}
