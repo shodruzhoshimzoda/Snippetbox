@@ -13,8 +13,6 @@ import (
 // handler for home-page
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
-	w.Header().Add("Server", "Go`")
-
 	snippets, err := app.snippets.Latest()
 	if err != nil {
 		app.serveError(w, r, err)
@@ -49,7 +47,6 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
-
 
 	data := app.newTemplateData(r)
 	data.Snippet = snippet
