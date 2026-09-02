@@ -35,7 +35,7 @@ func main() {
 		log.Error(err.Error())
 		os.Exit(1)
 	}
-	DSN := os.Getenv("DATABASE_DSN")
+	DSN := os.Getenv("DB_URL")
 	if DSN == "" {
 		log.Error("Missing DATABASE_DSN")
 		os.Exit(1)
