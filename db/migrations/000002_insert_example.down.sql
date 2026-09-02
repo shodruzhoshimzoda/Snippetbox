@@ -1,0 +1,1 @@
+DELETE FROM snippets WHERE title IN ('Old Silent Pond', 'Over The Wintry Forest', 'First Autumn Morning');
