@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	// "github.com/pingcap/log"
@@ -56,15 +55,11 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
 
-	title := "O snail"
-	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"
-	expires := 7
+	app.render(w, r, http.StatusOK, "create.html", data)
+}
 
-	id, err := app.snippets.Insert(title, content, expires)
-	if err != nil {
-		app.serveError(w, r, err)
-	}
-	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
 
 }
