@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
+
 	// "github.com/pingcap/log"
 
 	"github.com/shodruzhoshimzoda/snippetbox/internal/models"
@@ -79,6 +82,27 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 	expires, err := strconv.Atoi(r.PostFormValue("expires"))
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	fieldErrors := make(map[string]string)
+
+	if strings.TrimSpace(title) == "" {
+		fieldErrors["title"] = "the field can not be blank"
+	} else if utf8.RuneCountInString(title) > 100 {
+		fieldErrors["title"] = "the field can not be more than 100 characters"
+	}
+
+	if strings.TrimSpace(content) == "" {
+		fieldErrors["content"] = "the field can not be blank"
+	}
+
+	if expires != 1 && expires != 7 && expires != 365 {
+		fieldErrors["expires"] = "the field must equal to 1, 7 or 365"
+	}
+
+	if len(fieldErrors) > 0 {
+		fmt.Fprint(w, fieldErrors)
 		return
 	}
 
