@@ -63,6 +63,10 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
 
+	/* if the request body size is more than 10M, we should return Bad Request	*/
+
+	r.Body = http.MaxBytesReader(w, r.Body, 4096) // Limiting the request body size to 4096
+
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
