@@ -12,5 +12,11 @@
                 <time>Expires: {{humanDate .Expires}}</time>
             </div>
         </div>
+        <div style="margin-top: 20px;">
+            <form action="/snippet/delete/{{.ID}}" method="POST" 
+                onsubmit="return confirm('You realy want to delete this snippet ?');">
+                <button type="submit" class="btn-delete">Удалить сниппет</button>
+            </form>
+        </div>
     {{end}}
 {{end}}
