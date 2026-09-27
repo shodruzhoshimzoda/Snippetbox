@@ -123,3 +123,28 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 
 }
+
+
+func (app *application) snippetDelete(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id")) // convert id which is string to integer
+
+	if err != nil || id < 1 {
+		http.NotFound(w, r) // because we get invalid ID, the page with this id its not exist
+		return
+	}
+
+	 err = app.snippets.Delete(id)
+	if err != nil {
+		if errors.Is(err, models.ErrSnippetNotFound) {
+			http.NotFound(w, r)
+			return
+		} else {
+			app.serveError(w, r, err)
+		}
+		return
+
+	}
+
+		http.Redirect(w, r, "/",http.StatusSeeOther)
+
+}
