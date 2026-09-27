@@ -93,3 +93,24 @@ func (s *SnippetModel) Latest() ([]Snippet, error) {
 	}
 	return snippets, nil
 }
+
+
+
+
+func (s *SnippetModel) Delete(id int)  error {
+
+	stmt := `DELETE FROM snippets where id = $1`
+
+	_, err := s.DB.Exec(context.Background(), stmt, id)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return ErrSnippetNotFound
+		}
+
+		return err
+	}
+
+	return nil
+
+}
