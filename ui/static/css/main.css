@@ -69,7 +69,8 @@ a.button:hover, input[type="submit"]:hover {
     box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
 }
 
-button {
+/* Обычные кнопки-ссылки, но КРОМЕ красной */
+button:not(.btn-delete) {
     background: none;
     padding: 0;
     border: none;
@@ -77,6 +78,11 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: color 0.2s ease;
+}
+
+button:not(.btn-delete):hover {
+    color: #059669;
+    text-decoration: underline;
 }
 
 button:hover {
@@ -317,4 +323,23 @@ footer {
     font-size: 14px;
     text-align: center;
     margin-top: auto;
+}
+/* --- Кнопка удаления --- */
+button.btn-delete {
+    background-color: #dc3545 !important;
+    background: #dc3545 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+
+button.btn-delete:hover {
+    background-color: #a71d2a !important;
+    background: #a71d2a !important;
+    color: #FFFFFF !important;
+    text-decoration: none;
 }
