@@ -58,7 +58,7 @@ func main() {
 
 	app.logger.Info("connected to database")
 
-	log.Info("Server was runed ", "addr", *addr)
+	log.Info("Server was runed on http://localhost:4000", "addr", *addr)
 
 	if err := http.ListenAndServe(*addr, app.routes()); err != nil {
 		log.Error(err.Error())
