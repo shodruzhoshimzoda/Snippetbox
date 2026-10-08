@@ -87,19 +87,25 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 
 	//title := r.PostFormValue("title")
 	//content := r.PostFormValue("content")
+	//
+	//expires, err := strconv.Atoi(r.PostForm.Get("expires"))
+	//if err != nil {
+	//	app.clientError(w, http.StatusBadRequest)
+	//	return
+	//
+	//}
+	//form := SnippetCreateForm{
+	//	Title:   r.PostForm.Get("title"),
+	//	Content: r.PostForm.Get("content"),
+	//	Expires: expires,
+	//}
 
-	expires, err := strconv.Atoi(r.PostForm.Get("expires"))
+	var form SnippetCreateForm
+
+	err = app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
-		return
-
 	}
-	form := SnippetCreateForm{
-		Title:   r.PostForm.Get("title"),
-		Content: r.PostForm.Get("content"),
-		Expires: expires,
-	}
-
 	form.FieldErrors = map[string]string{}
 
 	form.CheckFieldError(validator.NotBlank(form.Title), "title", "This field can not be blank")
@@ -114,7 +120,7 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	id, err := app.snippets.Insert(form.Title, form.Content, expires)
+	id, err := app.snippets.Insert(form.Title, form.Content, form.Expires)
 	if err != nil {
 		app.serveError(w, r, err)
 		return
@@ -124,7 +130,6 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 
 }
 
-
 func (app *application) snippetDelete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id")) // convert id which is string to integer
 
@@ -133,7 +138,7 @@ func (app *application) snippetDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	 err = app.snippets.Delete(id)
+	err = app.snippets.Delete(id)
 	if err != nil {
 		if errors.Is(err, models.ErrSnippetNotFound) {
 			http.NotFound(w, r)
@@ -145,6 +150,6 @@ func (app *application) snippetDelete(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-		http.Redirect(w, r, "/",http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }

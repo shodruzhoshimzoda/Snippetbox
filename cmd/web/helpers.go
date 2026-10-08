@@ -2,9 +2,12 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/go-playground/form/v4"
 )
 
 // this method will be used if we encountered with any unexpected error in server side
@@ -51,4 +54,24 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
 		CurrentYear: time.Now().Year(),
 	}
+}
+
+func (app *application) decodePostForm(r *http.Request, dst any) error {
+
+	if err := r.ParseForm(); err != nil {
+		return err
+	}
+
+	err := app.formDecoder.Decode(dst, r.PostForm)
+	if err != nil {
+
+		var InvalidDecodeError *form.InvalidDecoderError
+		if errors.As(err, &InvalidDecodeError) {
+			panic(err)
+		}
+		return err
+
+	}
+
+	return nil
 }
