@@ -57,10 +57,10 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 }
 
 type SnippetCreateForm struct {
-	Title   string
-	Content string
-	Expires int
-	validator.Validator
+	Title               string `form:"title"`
+	Content             string `form:"content"`
+	Expires             int    `form:"expires"`
+	validator.Validator `form:"-"`
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
@@ -76,37 +76,15 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
 
 	/* if the request body size is more than 10M, we should return Bad Request	*/
-
 	r.Body = http.MaxBytesReader(w, r.Body, 4096) // Limiting the request body size to 4096
 
-	err := r.ParseForm()
+	var form SnippetCreateForm
+
+	err := app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-
-	//title := r.PostFormValue("title")
-	//content := r.PostFormValue("content")
-	//
-	//expires, err := strconv.Atoi(r.PostForm.Get("expires"))
-	//if err != nil {
-	//	app.clientError(w, http.StatusBadRequest)
-	//	return
-	//
-	//}
-	//form := SnippetCreateForm{
-	//	Title:   r.PostForm.Get("title"),
-	//	Content: r.PostForm.Get("content"),
-	//	Expires: expires,
-	//}
-
-	var form SnippetCreateForm
-
-	err = app.decodePostForm(r, &form)
-	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
-	}
-	form.FieldErrors = map[string]string{}
 
 	form.CheckFieldError(validator.NotBlank(form.Title), "title", "This field can not be blank")
 	form.CheckFieldError(validator.MaxChars(form.Title, 100), "title", "This field can not be more than 100 characters long")

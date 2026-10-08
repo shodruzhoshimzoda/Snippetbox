@@ -47,15 +47,19 @@ func main() {
 	db, err := openDB(DSN)
 	if err != nil {
 		log.Error(err.Error())
+		os.Exit(1)
 	}
 	defer db.Close(context.Background())
 
 	templateCache, err := newTemplateCache()
 
+	formDecoder := form.NewDecoder()
+
 	app := &application{
 		logger:        log,
 		snippets:      &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	app.logger.Info("connected to database")
